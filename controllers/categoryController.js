@@ -1,5 +1,9 @@
 const Category = require('../models/category');
 
+exports.categoryIndex = function (req, res, next) {
+  res.send('Not implemented: category index');
+};
+
 exports.categoryList = function (req, res, next) {
   res.send('Not implemented: category list');
 };
@@ -20,7 +24,7 @@ exports.categoryDeleteGet = function (req, res, next) {
   res.send('Not implemented: category delete get');
 };
 
-exports.categoryDeletePost = function (req, res, next) {
+exports.categoryDeleteDelete = function (req, res, next) {
   res.send('Not implemented: category delete post');
 };
 
@@ -28,6 +32,6 @@ exports.categoryUpdateGet = function (req, res, next) {
   res.send('Not implemented: category update get');
 };
 
-exports.categoryUpdatePost = function (req, res, next) {
+exports.categoryUpdatePatch = function (req, res, next) {
   res.send('Not implemented: category update post');
 };

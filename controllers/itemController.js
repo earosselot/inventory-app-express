@@ -20,14 +20,14 @@ exports.itemDeleteGet = function (req, res, next) {
   res.send('Not implemented: item delete get');
 };
 
-exports.itemDeletePost = function (req, res, next) {
+exports.itemDeleteDelete = function (req, res, next) {
   res.send('Not implemented: item delete post');
 };
 
-exports.itemUpodateGet = function (req, res, next) {
+exports.itemUpdateGet = function (req, res, next) {
   res.send('Not implemented: item update get');
 };
 
-exports.itemUpdatePost = function (req, res, next) {
+exports.itemUpdatePatch = function (req, res, next) {
   res.send('Not implemented: item update post');
 };
