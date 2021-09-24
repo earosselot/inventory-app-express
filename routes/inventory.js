@@ -13,7 +13,7 @@ router.get('/category', categoryController.categoryList);
 
 router.get('/category/create', categoryController.categoryCreateGet);
 
-router.post('/category/:id/create', categoryController.categoryCreatePost);
+router.post('/category/create', categoryController.categoryCreatePost);
 
 router.get('/category/:id/delete', categoryController.categoryDeleteGet);
 

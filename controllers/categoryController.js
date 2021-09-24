@@ -1,5 +1,6 @@
 const Category = require('../models/category');
 const Item = require('../models/item');
+const { body, validationResult } = require('express-validator');
 
 exports.categoryIndex = async function (req, res, next) {
   try {
@@ -44,12 +45,43 @@ exports.categoryDetails = async function (req, res, next) {
 };
 
 exports.categoryCreateGet = function (req, res, next) {
-  res.send('Not implemented: category create get');
+  res.render('category_form', { title: 'Create New Category' });
 };
 
-exports.categoryCreatePost = function (req, res, next) {
-  res.send('Not implemented: category create post');
-};
+exports.categoryCreatePost = [
+  body('name', 'Name must have at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description', 'Description must have at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+
+  async function (req, res, next) {
+    try {
+      const errors = validationResult(req);
+
+      const category = new Category({
+        name: req.body.name,
+        description: req.body.description,
+      });
+
+      if (!errors.isEmpty()) {
+        res.render('category_form', {
+          title: 'Create New Category',
+          errors: errors.errors,
+          category,
+        });
+      } else {
+        const savedCategory = await category.save();
+        res.redirect(savedCategory.url);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+];
 
 exports.categoryDeleteGet = function (req, res, next) {
   res.send('Not implemented: category delete get');
