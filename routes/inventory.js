@@ -23,7 +23,7 @@ router.get('/category/:id/update', categoryController.categoryUpdateGet);
 
 router.patch('/category/:id/update', categoryController.categoryUpdatePatch);
 
-router.get('category/:id/details', categoryController.categoryDetails);
+router.get('/category/:id', categoryController.categoryDetails);
 
 /// ITEM ROUTES ///
 
@@ -40,5 +40,7 @@ router.delete('/item/:id/delete', itemController.itemDeleteDelete);
 router.get('/item/:id/update', itemController.itemUpdateGet);
 
 router.patch('/item/:id/update', itemController.itemUpdatePatch);
+
+router.get('/item/:id', itemController.itemDetail);
 
 module.exports = router;

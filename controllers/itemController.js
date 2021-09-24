@@ -1,11 +1,21 @@
 const Item = require('../models/item');
 
-exports.itemList = function (req, res, next) {
-  res.send('Not implemented: item list.');
+exports.itemList = async function (req, res, next) {
+  try {
+    const itemList = await Item.find({}, 'name price');
+    res.render('item_list', { title: 'Item List', itemList });
+  } catch (error) {
+    next(error);
+  }
 };
 
-exports.itemDetail = function (req, res, next) {
-  res.send('Not implemented: item detail');
+exports.itemDetail = async function (req, res, next) {
+  try {
+    const item = await Item.findById(req.params.id).populate('category');
+    res.render('item_detail', { title: 'Item Details', item });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.itemCreateGet = function (req, res, next) {

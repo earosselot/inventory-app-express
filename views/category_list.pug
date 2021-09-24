@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+  ul 
+    -categoryList.sort(function(a, b) {const textA = a.name.toUpperCase(); textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+    each category in categoryList
+      li
+        a(href=category.url) #{category.name}
+        | (cantidad articulos)
+    
+    else 
+      li There are no categories.
