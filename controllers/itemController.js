@@ -1,4 +1,6 @@
 const Item = require('../models/item');
+const Category = require('../models/category');
+const { check, body, validationResult } = require('express-validator');
 
 exports.itemList = async function (req, res, next) {
   try {
@@ -18,13 +20,70 @@ exports.itemDetail = async function (req, res, next) {
   }
 };
 
-exports.itemCreateGet = function (req, res, next) {
-  res.send('Not implemented: item create get');
+exports.itemCreateGet = async function (req, res, next) {
+  try {
+    const categories = await Category.find({});
+    res.render('item_form', { title: 'Create New Item', categories });
+  } catch (error) {
+    next(error);
+  }
 };
 
-exports.itemCreatePost = function (req, res, next) {
-  res.send('Not implemented: item create post');
-};
+exports.itemCreatePost = [
+  function (req, res, next) {
+    if (req.body.category === undefined) req.body.category = [];
+    next();
+  },
+
+  body('name', 'Name must be at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description', 'Description must be at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  // body('category.*').escape(),
+  body('price', 'Price must be a Number').isNumeric(),
+  check('price', 'Price must be greater than 0').isFloat({ min: 0 }),
+  body(
+    'number_in_stock',
+    'Number of stock must be an integer number (ej.: 1, 2, 3)'
+  )
+    .trim()
+    .isNumeric()
+    .escape(),
+  check('number_in_stock', 'Price must be greater than 0').isInt({ min: 0 }),
+
+  async function (req, res, next) {
+    const errors = validationResult(req, res, next);
+
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      number_in_stock: req.body.number_in_stock,
+    });
+
+    if (!errors.isEmpty()) {
+      const categories = await Category.find({});
+      categories.map((category) => {
+        if (item.category.includes(category._id.toString()))
+          category.checked = true;
+      });
+      res.render('item_form', {
+        title: 'Create New Item',
+        errors: errors.errors,
+        item,
+        categories,
+      });
+    } else {
+      const savedItem = await item.save();
+      res.redirect(savedItem.url);
+    }
+  },
+];
 
 exports.itemDeleteGet = function (req, res, next) {
   res.send('Not implemented: item delete get');
