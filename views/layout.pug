@@ -19,5 +19,22 @@ html
 
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    h1= title
-    block content
+    div.container-fluid
+      div.row
+        div.col-sm-2
+          block sidebar 
+            ul.sidebar-nav
+              li
+                a(href='/inventory') Home 
+              li 
+                a(href='/inventory/item') All items 
+              li 
+                a(href='/inventory/category') All categories
+              hr
+              li 
+                a(href='/inventory/item/create') Create new Item 
+              li 
+                a(href='/inventory/category/create') Create new Category 
+        div.col-sm-10
+          h1= title
+          block content
