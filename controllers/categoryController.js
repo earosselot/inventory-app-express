@@ -40,7 +40,11 @@ exports.categoryDetails = async function (req, res, next) {
       items,
     });
   } catch (error) {
-    next(error);
+    if (error.name === 'CastError') {
+      res.redirect('/inventory/category');
+    } else {
+      next(error);
+    }
   }
 };
 
@@ -83,12 +87,35 @@ exports.categoryCreatePost = [
   },
 ];
 
-exports.categoryDeleteGet = function (req, res, next) {
-  res.send('Not implemented: category delete get');
+exports.categoryDeleteGet = async function (req, res, next) {
+  try {
+    const [category, items] = await Promise.all([
+      Category.findById(req.params.id),
+      Item.find({ category: req.params.id }),
+    ]);
+    if (!category) {
+      res.redirect('/inventory/category');
+    } else {
+      res.render('category_delete', {
+        title: 'Delete Category',
+        category,
+        items,
+      });
+    }
+  } catch (error) {
+    if (error.name === 'CastError') {
+      res.redirect('/inventory/category');
+    } else {
+      next(error);
+    }
+  }
 };
 
 exports.categoryDeleteDelete = function (req, res, next) {
-  res.send('Not implemented: category delete post');
+  try {
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.categoryUpdateGet = function (req, res, next) {

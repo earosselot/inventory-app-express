@@ -16,7 +16,11 @@ exports.itemDetail = async function (req, res, next) {
     const item = await Item.findById(req.params.id).populate('category');
     res.render('item_detail', { title: 'Item Details', item });
   } catch (error) {
-    next(error);
+    if (error.name === 'CastError') {
+      res.redirect('/inventory/item');
+    } else {
+      next(error);
+    }
   }
 };
 
