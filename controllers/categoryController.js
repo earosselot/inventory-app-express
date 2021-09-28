@@ -111,8 +111,24 @@ exports.categoryDeleteGet = async function (req, res, next) {
   }
 };
 
-exports.categoryDeleteDelete = function (req, res, next) {
+exports.categoryDeletePost = async function (req, res, next) {
   try {
+    // Delete category from item's category field.
+    const items = await Item.find({ category: req.body.categoryId });
+    async function deleteCategory(item, categoryId) {
+      await item.category.pull({ _id: categoryId });
+      await item.save();
+    }
+    const itemsDeletePromises = [];
+    items.forEach((item) =>
+      itemsDeletePromises.push(deleteCategory(item, req.body.categoryId))
+    );
+    await Promise.all(itemsDeletePromises);
+
+    // Delete category
+    await Category.findByIdAndDelete(req.body.categoryId);
+
+    res.redirect('/inventory/category');
   } catch (error) {
     next(error);
   }

@@ -17,7 +17,7 @@ router.post('/category/create', categoryController.categoryCreatePost);
 
 router.get('/category/:id/delete', categoryController.categoryDeleteGet);
 
-router.delete('/category/:id/delete', categoryController.categoryDeleteDelete);
+router.post('/category/:id/delete', categoryController.categoryDeletePost);
 
 router.get('/category/:id/update', categoryController.categoryUpdateGet);
 

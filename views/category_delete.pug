@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  h2= category.name
+  p= category.description
   if items
     p All these items have this category as one of their categories: 
     ul
@@ -9,7 +11,7 @@ block content
         a(href=item.url) #{item.name}
     p If you delete the category, some items may be left with no category.
   p Do you really want to delete the category?
-  form(action="" method="DELETE")
+  form(action="" method="POST")
     div.form-group
       input#categoryid(type="hidden" value=category._id name="categoryId" required=true )
     button.btn.btn-danger(type="submit") Delete 

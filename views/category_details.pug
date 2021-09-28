@@ -13,4 +13,7 @@ block content
     else 
       li No items in this category
 
-  
+  hr
+
+  form(action=category.url+"/delete")
+    button.btn.btn-danger(type="submit") Delete
