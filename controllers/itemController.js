@@ -14,7 +14,7 @@ exports.itemList = async function (req, res, next) {
 exports.itemDetail = async function (req, res, next) {
   try {
     const item = await Item.findById(req.params.id).populate('category');
-    res.render('item_detail', { title: 'Item Details', item });
+    res.render('item_details', { title: 'Item Details', item });
   } catch (error) {
     if (error.name === 'CastError') {
       res.redirect('/inventory/item');
@@ -89,12 +89,22 @@ exports.itemCreatePost = [
   },
 ];
 
-exports.itemDeleteGet = function (req, res, next) {
-  res.send('Not implemented: item delete get');
+exports.itemDeleteGet = async function (req, res, next) {
+  try {
+    const item = await Item.findById(req.params.id);
+    res.render('item_delete', { title: 'Delete Item', item });
+  } catch (error) {
+    next(error);
+  }
 };
 
-exports.itemDeleteDelete = function (req, res, next) {
-  res.send('Not implemented: item delete post');
+exports.itemDeletePost = async function (req, res, next) {
+  try {
+    await Item.findByIdAndDelete(req.body.itemId);
+    res.redirect('/inventory/item');
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.itemUpdateGet = function (req, res, next) {

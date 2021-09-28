@@ -35,7 +35,7 @@ router.post('/item/create', itemController.itemCreatePost);
 
 router.get('/item/:id/delete', itemController.itemDeleteGet);
 
-router.delete('/item/:id/delete', itemController.itemDeleteDelete);
+router.post('/item/:id/delete', itemController.itemDeletePost);
 
 router.get('/item/:id/update', itemController.itemUpdateGet);
 

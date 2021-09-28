@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h2= item.name
+  p= item.description
+
+  p Do you really want to delete the item?
+
+  form(action="" method="POST")
+    div.form-group
+      input#itemid(type="hidden" value=item._id name="itemId" required=true )
+    button.btn.btn-danger(type="submit") Delete 
