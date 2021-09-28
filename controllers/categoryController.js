@@ -134,10 +134,51 @@ exports.categoryDeletePost = async function (req, res, next) {
   }
 };
 
-exports.categoryUpdateGet = function (req, res, next) {
-  res.send('Not implemented: category update get');
+exports.categoryUpdateGet = async function (req, res, next) {
+  try {
+    const category = await Category.findById(req.params.id);
+    res.render('category_form', { title: 'Update category', category });
+  } catch (error) {
+    next(error);
+  }
 };
 
-exports.categoryUpdatePatch = function (req, res, next) {
-  res.send('Not implemented: category update post');
-};
+exports.categoryUpdatePost = [
+  body('name', 'Name must have at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description', 'Description must have at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+
+  async function (req, res, next) {
+    try {
+      const errors = validationResult(req);
+
+      const category = new Category({
+        name: req.body.name,
+        description: req.body.description,
+        _id: req.params.id,
+      });
+
+      if (!errors.isEmpty()) {
+        res.render('category_form', {
+          title: 'Create New Category',
+          errors: errors.errors,
+          category,
+        });
+      } else {
+        const updatedCategory = await Category.findByIdAndUpdate(
+          req.params.id,
+          category,
+          {}
+        );
+        res.redirect(updatedCategory.url);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+];

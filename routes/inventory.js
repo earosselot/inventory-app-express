@@ -21,7 +21,7 @@ router.post('/category/:id/delete', categoryController.categoryDeletePost);
 
 router.get('/category/:id/update', categoryController.categoryUpdateGet);
 
-router.patch('/category/:id/update', categoryController.categoryUpdatePatch);
+router.post('/category/:id/update', categoryController.categoryUpdatePost);
 
 router.get('/category/:id', categoryController.categoryDetails);
 
