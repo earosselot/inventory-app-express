@@ -104,8 +104,12 @@ exports.itemDeleteGet = async function (req, res, next) {
 
 exports.itemDeletePost = async function (req, res, next) {
   try {
-    await Item.findByIdAndDelete(req.body.itemId);
-    res.redirect('/inventory/item');
+    if (req.body.password === 'admin') {
+      await Item.findByIdAndDelete(req.body.itemId);
+      res.redirect('/inventory/item');
+    } else {
+      res.redirect('/inventory/item/' + req.body.itemId + '/delete');
+    }
   } catch (error) {
     next(error);
   }
@@ -166,7 +170,7 @@ exports.itemUpdatePost = [
         _id: req.params.id,
       });
 
-      if (!errors.isEmpty()) {
+      if (!errors.isEmpty() || req.body.password !== 'admin') {
         const categories = await Category.find({});
         categories.map((category) => {
           if (item.category.includes(category._id.toString()))

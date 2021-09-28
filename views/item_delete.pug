@@ -8,5 +8,8 @@ block content
 
   form(action="" method="POST")
     div.form-group
+      label(for="password") Password:
+      input#password(type="password" required=true name="password")
+    div.form-group
       input#itemid(type="hidden" value=item._id name="itemId" required=true )
     button.btn.btn-danger(type="submit") Delete 

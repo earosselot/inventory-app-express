@@ -13,5 +13,8 @@ block content
   p Do you really want to delete the category?
   form(action="" method="POST")
     div.form-group
+      label(for="password") Password:
+      input#password(type="password" required=true name="password")
+    div.form-group
       input#categoryid(type="hidden" value=category._id name="categoryId" required=true )
     button.btn.btn-danger(type="submit") Delete 
