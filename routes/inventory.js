@@ -39,7 +39,7 @@ router.post('/item/:id/delete', itemController.itemDeletePost);
 
 router.get('/item/:id/update', itemController.itemUpdateGet);
 
-router.patch('/item/:id/update', itemController.itemUpdatePatch);
+router.post('/item/:id/update', itemController.itemUpdatePost);
 
 router.get('/item/:id', itemController.itemDetail);
 
