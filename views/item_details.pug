@@ -3,6 +3,10 @@ extends layout
 block content 
 
   h2 #{item.name} (#{item._id})
+
+  if item.image
+    img(src=item.imagePath)
+
   p #[strong $#{item.price}] - stock:#{item.number_in_stock} units
   p= item.description
   h3 Categories

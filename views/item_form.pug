@@ -2,7 +2,19 @@ extends layout
 
 block content
 
-  form(method='POST' action='')
+  form(method='POST' action='' enctype='multipart/form-data')
+    div.form-group
+      input(
+        type='file' 
+        name='itemImage')
+      if item && item.image !== ''
+        img(src=item.imagePath)
+    if item 
+      div.form-group
+        input(
+          type='hidden' 
+          name='prevItemImage' 
+          value=item.image)
     div.form-group
       label(for='name') Name: 
       input#name.form-control(
@@ -55,5 +67,3 @@ block content
     ul 
       for error in errors
         li= error.msg
-
-

@@ -1,6 +1,21 @@
 const Item = require('../models/item');
 const Category = require('../models/category');
 const { check, body, validationResult } = require('express-validator');
+const path = require('path');
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/uploads');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSufix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const extension = file.originalname.split('.').pop();
+    const filename = `${file.fieldname}-${uniqueSufix}.${extension}`;
+    cb(null, filename);
+  },
+});
+const upload = multer({ storage: storage });
 
 exports.itemList = async function (req, res, next) {
   try {
@@ -34,6 +49,7 @@ exports.itemCreateGet = async function (req, res, next) {
 };
 
 exports.itemCreatePost = [
+  upload.single('itemImage'),
   function (req, res, next) {
     if (req.body.category === undefined) req.body.category = [];
     next();
@@ -63,12 +79,15 @@ exports.itemCreatePost = [
     try {
       const errors = validationResult(req, res, next);
 
+      const fileName = req.file ? req.file.filename : '';
+
       const item = new Item({
         name: req.body.name,
         description: req.body.description,
         category: req.body.category,
         price: req.body.price,
         number_in_stock: req.body.number_in_stock,
+        image: fileName,
       });
 
       if (!errors.isEmpty()) {
@@ -132,6 +151,7 @@ exports.itemUpdateGet = async function (req, res, next) {
 };
 
 exports.itemUpdatePost = [
+  upload.single('itemImage'),
   function (req, res, next) {
     if (req.body.category === undefined) req.body.category = [];
     next();
@@ -161,12 +181,15 @@ exports.itemUpdatePost = [
     try {
       const errors = validationResult(req, res, next);
 
+      const fileName = req.file ? req.file.filename : req.body.prevItemImage;
+
       const item = new Item({
         name: req.body.name,
         description: req.body.description,
         category: req.body.category,
         price: req.body.price,
         number_in_stock: req.body.number_in_stock,
+        image: fileName,
         _id: req.params.id,
       });
 
